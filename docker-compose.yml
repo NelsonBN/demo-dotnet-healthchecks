@@ -1,0 +1,43 @@
+networks:
+  demo:
+    driver: bridge
+
+services:
+
+  mongo:
+    image: mongo:7.0.9
+    container_name: mongo
+    ports:
+      - 27017:27017
+    networks:
+      - demo
+
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_BASICAUTH: false
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+    networks:
+      - demo
+    depends_on:
+      - mongo
+
+  demo-api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: technobre/demo-api
+    container_name: demo-api
+    restart: always
+    environment:
+      CONNECTIONSTRINGS__DEFAULT: mongodb://mongo:27017/Demo
+    ports:
+      - 8080:8080
+    networks:
+      - demo
+    depends_on:
+      - mongo

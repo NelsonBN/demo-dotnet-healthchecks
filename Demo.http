@@ -1,0 +1,29 @@
+@endpoint=http://localhost:8080
+
+###
+
+GET {{endpoint}}/products
+
+###
+
+POST {{endpoint}}/products
+Content-Type: application/json
+
+{
+    "name": "Product 1",
+    "price": 100
+}
+
+
+###
+###
+
+GET {{endpoint}}/healthz/startup
+
+###
+
+GET {{endpoint}}/healthz/live
+
+###
+
+GET {{endpoint}}/healthz/ready
